@@ -29,7 +29,7 @@ class Resultado extends StatelessWidget {
             "Sua pontuação foi: $pontuacao",
             style: const TextStyle(fontSize: 28),
           ),
-          ElevatedButton(
+          TextButton(
             onPressed: reiniciar,
             child: const Text(
               "Reiniciar",
