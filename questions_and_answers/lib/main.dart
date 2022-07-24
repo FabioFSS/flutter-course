@@ -1,69 +1,69 @@
-import 'package:questions_and_answers/questionario.dart';
+import 'package:questions_and_answers/quiz.dart';
 import 'package:flutter/material.dart';
-import 'package:questions_and_answers/resultado.dart';
+import 'package:questions_and_answers/result.dart';
 
 void main() {
-  runApp(const PerguntaApp());
+  runApp(const QuestionsApp());
 }
 
-class PerguntaApp extends StatefulWidget {
-  const PerguntaApp({Key? key}) : super(key: key);
+class QuestionsApp extends StatefulWidget {
+  const QuestionsApp({Key? key}) : super(key: key);
 
   @override
-  State<PerguntaApp> createState() => _PerguntaAppState();
+  State<QuestionsApp> createState() => _QuestionsAppState();
 }
 
-class _PerguntaAppState extends State<PerguntaApp> {
-  final List<Map<String, Object>> _perguntas = const [
+class _QuestionsAppState extends State<QuestionsApp> {
+  final List<Map<String, Object>> _questions = const [
     {
-      'texto': 'Qual é a sua cor favorita?',
-      'respostas': [
-        {'texto': 'Preto', 'nota': 1},
-        {'texto': 'Vermelho', 'nota': 2},
-        {'texto': 'Azul', 'nota': 3},
-        {'texto': 'Verde', 'nota': 4},
+      'text': 'What is your favorite color?',
+      'answers': [
+        {'text': 'Black', 'points': 1},
+        {'text': 'Red', 'points': 2},
+        {'text': 'Blue', 'points': 3},
+        {'text': 'Green', 'points': 4},
       ],
     },
     {
-      'texto': 'Qual sua cor favorita?',
-      'respostas': [
-        {'texto': 'Cachorro', 'nota': 1},
-        {'texto': 'Gato', 'nota': 2},
-        {'texto': 'Leão', 'nota': 3},
-        {'texto': 'Elefante', 'nota': 4},
+      'text': 'What is your favorite animal?',
+      'answers': [
+        {'text': 'Dog', 'points': 1},
+        {'text': 'Cat', 'points': 2},
+        {'text': 'Lion', 'points': 3},
+        {'text': 'Elephant', 'points': 4},
       ],
     },
     {
-      'texto': 'Qual seu instrutor favorito?',
-      'respostas': [
-        {'texto': 'Maria', 'nota': 1},
-        {'texto': 'João', 'nota': 2},
-        {'texto': 'Carlos', 'nota': 3},
-        {'texto': 'Amanda', 'nota': 4},
+      'text': 'What is your favorite teacher?',
+      'answers': [
+        {'text': 'Maria', 'points': 1},
+        {'text': 'João', 'points': 2},
+        {'text': 'Carlos', 'points': 3},
+        {'text': 'Amanda', 'points': 4},
       ],
     },
   ];
-  var _perguntaSelecionada = 0;
-  var _pontuacaoTotal = 0;
+  var _selectedQuestion = 0;
+  var _totalPoints = 0;
 
-  void _responder(int pontuacao) {
+  void _answer(int points) {
     setState(() {
-      if (temPerguntaSelecionada) {
-        _perguntaSelecionada++;
-        _pontuacaoTotal += pontuacao;
+      if (existSelectedQuestion) {
+        _selectedQuestion++;
+        _totalPoints += points;
       }
     });
   }
 
-  void _reiniciar() {
+  void _restart() {
     setState(() {
-      _perguntaSelecionada = 0;
-      _pontuacaoTotal = 0;
+      _selectedQuestion = 0;
+      _totalPoints = 0;
     });
   }
 
-  bool get temPerguntaSelecionada {
-    return _perguntaSelecionada < _perguntas.length;
+  bool get existSelectedQuestion {
+    return _selectedQuestion < _questions.length;
   }
 
   @override
@@ -71,17 +71,17 @@ class _PerguntaAppState extends State<PerguntaApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Center(child: Text('Perguntas')),
+          title: const Center(child: Text('Questions and answers')),
         ),
-        body: temPerguntaSelecionada
-            ? Questionario(
-                perguntas: _perguntas,
-                perguntaSelecionada: _perguntaSelecionada,
-                responder: _responder,
+        body: existSelectedQuestion
+            ? Quiz(
+                questions: _questions,
+                selectedQuestion: _selectedQuestion,
+                answer: _answer,
               )
-            : Resultado(
-                pontuacao: _pontuacaoTotal,
-                reiniciar: _reiniciar,
+            : Result(
+                points: _totalPoints,
+                restart: _restart,
               ),
       ),
     );

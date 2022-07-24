@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Resultado extends StatelessWidget {
-  const Resultado({Key? key, required this.pontuacao, required this.reiniciar})
+class Result extends StatelessWidget {
+  const Result({Key? key, required this.points, required this.restart})
       : super(key: key);
 
-  final int pontuacao;
-  final void Function() reiniciar;
+  final int points;
+  final void Function() restart;
 
-  String get fraseResultado {
-    if (pontuacao > 5) {
-      return 'Parabéns!';
+  String get phraseResult {
+    if (points > 5) {
+      return 'Congratulatins!';
     } else {
-      return 'Que pena...';
+      return 'Not good...';
     }
   }
 
@@ -22,17 +22,17 @@ class Resultado extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            fraseResultado,
+            phraseResult,
             style: const TextStyle(fontSize: 28),
           ),
           Text(
-            "Sua pontuação foi: $pontuacao",
+            "Your score was: $points",
             style: const TextStyle(fontSize: 28),
           ),
           TextButton(
-            onPressed: reiniciar,
+            onPressed: restart,
             child: const Text(
-              "Reiniciar",
+              "Restart",
             ),
           )
         ],

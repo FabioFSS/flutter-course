@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-class Resposta extends StatelessWidget {
-  const Resposta({Key? key, required this.texto, required this.onSelecao})
+class Answer extends StatelessWidget {
+  const Answer({Key? key, required this.text, required this.onSelection})
       : super(key: key);
 
-  final String texto;
-  final void Function() onSelecao;
+  final String text;
+  final void Function() onSelection;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: onSelecao,
+        onPressed: onSelection,
         style: ElevatedButton.styleFrom(
           primary: Colors.blue,
           onPrimary: Colors.white,
         ),
-        child: Text(texto),
+        child: Text(text),
       ),
     );
   }
