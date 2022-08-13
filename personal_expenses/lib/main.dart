@@ -5,16 +5,23 @@ import 'components/transaction_list.dart';
 import 'models/transaction.dart';
 
 void main() {
-  runApp(const ExpensesApp());
+  runApp(ExpensesApp());
 }
 
 class ExpensesApp extends StatelessWidget {
-  const ExpensesApp({Key? key}) : super(key: key);
+  ExpensesApp({Key? key}) : super(key: key);
+  final myTheme = ThemeData();
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
+    return MaterialApp(
+      home: const HomePage(),
+      theme: myTheme.copyWith(
+        colorScheme: myTheme.colorScheme.copyWith(
+          primary: const Color(0xFF2C3333),
+          secondary: const Color(0xFF395B64),
+        ),
+      ),
     );
   }
 }
