@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:personal_expenses/components/transaction_form.dart';
 import 'components/transaction_list.dart';
 import 'models/transaction.dart';
+import 'package:personal_expenses/components/chart.dart';
 
 void main() {
   runApp(ExpensesApp());
@@ -21,6 +22,22 @@ class ExpensesApp extends StatelessWidget {
           primary: const Color(0xFF2C3333),
           secondary: const Color(0xFF395B64),
         ),
+        textTheme: myTheme.textTheme.copyWith(
+          headline6: const TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
@@ -34,7 +51,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _transactions = [
+  final List<Transaction> _transactions = [
     Transaction(
       id: 't1',
       title: 'New running shoes',
@@ -45,9 +62,27 @@ class _HomePageState extends State<HomePage> {
       id: 't2',
       title: 'Computer',
       value: 2000.99,
-      date: DateTime.now(),
+      date: DateTime.now().subtract(const Duration(days: 1)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Teste',
+      value: 2000.99,
+      date: DateTime.now().subtract(const Duration(days: 40)),
     ),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions
+        .where(
+          (element) => element.date.isAfter(
+            DateTime.now().subtract(
+              const Duration(days: 7),
+            ),
+          ),
+        )
+        .toList();
+  }
 
   _addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -91,9 +126,11 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Card(
+            Card(
               elevation: 10,
-              child: Text('Graphics'),
+              child: Chart(
+                recentTransactions: _recentTransactions,
+              ),
             ),
             TransactionList(
               transactions: _transactions,
