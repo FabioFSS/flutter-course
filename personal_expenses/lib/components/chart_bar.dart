@@ -14,53 +14,56 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        FittedBox(
-          child: Text(
-            value.toStringAsFixed(2),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          FittedBox(
+            child: Text(
+              value.toStringAsFixed(2),
+            ),
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 10,
+          const Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 10,
+            ),
           ),
-        ),
-        SizedBox(
-          height: 100,
-          width: 10,
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  color: const Color.fromRGBO(220, 220, 220, 1),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              FractionallySizedBox(
-                heightFactor: percentage,
-                child: Container(
+          SizedBox(
+            height: 100,
+            width: 10,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
                   decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                    color: const Color.fromRGBO(220, 220, 220, 1),
                     borderRadius: BorderRadius.circular(5),
-                    color: Theme.of(context).primaryColor,
                   ),
                 ),
-              )
-            ],
+                FractionallySizedBox(
+                  heightFactor: percentage,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 10,
+          const Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 10,
+            ),
           ),
-        ),
-        Text(label),
-      ],
+          Text(label),
+        ],
+      ),
     );
   }
 }
