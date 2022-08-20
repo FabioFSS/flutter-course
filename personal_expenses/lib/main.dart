@@ -29,6 +29,7 @@ class ExpensesApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
+          button: const TextStyle(color: Colors.white),
         ),
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
@@ -70,6 +71,42 @@ class _HomePageState extends State<HomePage> {
       value: 2000.99,
       date: DateTime.now().subtract(const Duration(days: 40)),
     ),
+    Transaction(
+      id: 't3',
+      title: 'Teste',
+      value: 2000.99,
+      date: DateTime.now().subtract(const Duration(days: 40)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Teste',
+      value: 2000.99,
+      date: DateTime.now().subtract(const Duration(days: 40)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Teste',
+      value: 2000.99,
+      date: DateTime.now().subtract(const Duration(days: 40)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Teste',
+      value: 2000.99,
+      date: DateTime.now().subtract(const Duration(days: 40)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Teste',
+      value: 2000.99,
+      date: DateTime.now().subtract(const Duration(days: 40)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Teste',
+      value: 2000.99,
+      date: DateTime.now().subtract(const Duration(days: 40)),
+    ),
   ];
 
   List<Transaction> get _recentTransactions {
@@ -84,12 +121,12 @@ class _HomePageState extends State<HomePage> {
         .toList();
   }
 
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime date) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
@@ -97,6 +134,14 @@ class _HomePageState extends State<HomePage> {
     });
 
     Navigator.of(context).pop();
+  }
+
+  _deleteTransactionn(String id) {
+    setState(
+      () {
+        _transactions.removeWhere((element) => element.id == id);
+      },
+    );
   }
 
   _openTransactionForm(BuildContext context) {
@@ -114,7 +159,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Personal Expenses'),
+        centerTitle: true,
+        title: const Text(
+          'Personal Expenses',
+        ),
         actions: [
           IconButton(
             onPressed: () => _openTransactionForm(context),
@@ -122,24 +170,25 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Chart(
-              recentTransactions: _recentTransactions,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Chart(
+            recentTransactions: _recentTransactions,
+          ),
+          TransactionList(
+            transactions: _transactions,
+            onRemove: _deleteTransactionn,
+          ),
+          Expanded(
+            flex: 1,
+            child: ElevatedButton(
+              onPressed: () => _openTransactionForm(context),
+              child: const Icon(Icons.add),
             ),
-            TransactionList(
-              transactions: _transactions,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _openTransactionForm(context),
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

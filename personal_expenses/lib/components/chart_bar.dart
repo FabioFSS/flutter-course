@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChartBar extends StatelessWidget {
-  const ChartBar({
+  ChartBar({
     Key? key,
     required this.label,
     required this.value,
@@ -12,25 +13,22 @@ class ChartBar extends StatelessWidget {
   final double value;
   final double percentage;
 
+  final NumberFormat numberFormat = NumberFormat.compact();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(12),
       child: Column(
         children: [
-          FittedBox(
+          Expanded(
+            flex: 1,
             child: Text(
-              value.toStringAsFixed(2),
+              numberFormat.format(value),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 10,
-            ),
-          ),
-          SizedBox(
-            height: 100,
-            width: 10,
+          Expanded(
+            flex: 6,
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
@@ -56,12 +54,15 @@ class ChartBar extends StatelessWidget {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 10,
+          Expanded(
+            flex: 1,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                label,
+              ),
             ),
           ),
-          Text(label),
         ],
       ),
     );

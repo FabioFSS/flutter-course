@@ -3,15 +3,19 @@ import 'package:intl/intl.dart';
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
-  const TransactionList({Key? key, required this.transactions})
+  TransactionList(
+      {Key? key, required this.transactions, required this.onRemove})
       : super(key: key);
 
   final List<Transaction> transactions;
+  final void Function(String) onRemove;
+
+  final NumberFormat numberFormat = NumberFormat.compact();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 1.5,
+    return Expanded(
+      flex: 10,
       child: transactions.isEmpty
           ? Column(
               children: [
@@ -32,11 +36,15 @@ class TransactionList extends StatelessWidget {
               ],
             )
           : ListView.builder(
+              shrinkWrap: true,
               itemCount: transactions.length,
               itemBuilder: (context, index) {
                 final tr = transactions[index];
                 return Card(
-                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  elevation: 2,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
@@ -45,13 +53,21 @@ class TransactionList extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8),
                           child: FittedBox(
-                            child: Text('R\$${tr.value}'),
+                            child: Text('R\$${numberFormat.format(tr.value)}'),
                           ),
                         ),
                       ),
                       title: Text(
                         tr.title,
                         style: Theme.of(context).textTheme.headline6,
+                      ),
+                      subtitle: Text(
+                        DateFormat('d MMM y').format(tr.date),
+                      ),
+                      trailing: IconButton(
+                        onPressed: () => onRemove(tr.id),
+                        icon: const Icon(Icons.delete),
+                        color: Theme.of(context).errorColor,
                       ),
                     ),
                   ),
