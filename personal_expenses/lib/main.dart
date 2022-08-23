@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/components/transaction_form.dart';
 import 'components/transaction_list.dart';
@@ -54,6 +53,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Transaction> _transactions = [];
+  bool _showChart = false;
 
   void _refreshTransactions() async {
     final data = await TransactionHelper.transactions();
@@ -97,6 +97,7 @@ class _HomePageState extends State<HomePage> {
 
   _openTransactionForm(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (_) {
         return TransactionForm(
@@ -108,6 +109,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -115,22 +119,33 @@ class _HomePageState extends State<HomePage> {
           'Personal Expenses',
         ),
         actions: [
+          if (isLandscape)
+            IconButton(
+              icon: Icon(_showChart ? Icons.list : Icons.pie_chart),
+              onPressed: () {
+                setState(() {
+                  _showChart = !_showChart;
+                });
+              },
+            ),
           IconButton(
             onPressed: () => _openTransactionForm(context),
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Chart(
-            recentTransactions: _recentTransactions,
-          ),
-          TransactionList(
-            transactions: _transactions,
-            onRemove: _deleteTransaction,
-          ),
+          if (_showChart || !isLandscape)
+            Chart(
+              recentTransactions: _recentTransactions,
+            ),
+          if (!_showChart || !isLandscape)
+            TransactionList(
+              transactions: _transactions,
+              onRemove: _deleteTransaction,
+            ),
           Expanded(
             flex: 1,
             child: ElevatedButton(

@@ -23,8 +23,10 @@ class ChartBar extends StatelessWidget {
         children: [
           Expanded(
             flex: 1,
-            child: Text(
-              numberFormat.format(value),
+            child: FittedBox(
+              child: Text(
+                numberFormat.format(value),
+              ),
             ),
           ),
           Expanded(
@@ -58,8 +60,10 @@ class ChartBar extends StatelessWidget {
             flex: 1,
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: Text(
-                label,
+              child: FittedBox(
+                child: Text(
+                  label,
+                ),
               ),
             ),
           ),

@@ -46,9 +46,12 @@ class TransactionHelper {
   static Future<void> updateTransaction(Transaction transaction) async {
     final db = await TransactionHelper.db();
 
+    final transactionMap = transaction.toMap();
+    transactionMap['date'] = transactionMap['date'].toString();
+
     await db.update(
       'transactions',
-      transaction.toMap(),
+      transactionMap,
       where: 'id = ?',
       whereArgs: [transaction.id],
     );

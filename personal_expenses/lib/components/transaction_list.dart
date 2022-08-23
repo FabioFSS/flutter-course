@@ -17,24 +17,26 @@ class TransactionList extends StatelessWidget {
     return Expanded(
       flex: 10,
       child: transactions.isEmpty
-          ? Column(
-              children: [
-                Text(
-                  'No Transactions Registered',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(10),
-                ),
-                SizedBox(
-                  height: 200,
-                  child: Image.asset(
-                    'assets/images/waiting.png',
-                    fit: BoxFit.cover,
+          ? LayoutBuilder(builder: (context, constraints) {
+              return Column(
+                children: [
+                  Text(
+                    'No Transactions Registered',
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                ),
-              ],
-            )
+                  const Padding(
+                    padding: EdgeInsets.all(10),
+                  ),
+                  SizedBox(
+                    height: constraints.maxHeight * 0.3,
+                    child: Image.asset(
+                      'assets/images/waiting.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              );
+            })
           : ListView.builder(
               shrinkWrap: true,
               itemCount: transactions.length,
