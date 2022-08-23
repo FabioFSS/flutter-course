@@ -2,8 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/components/transaction_form.dart';
 import 'components/transaction_list.dart';
-import 'models/transaction.dart';
+import 'package:personal_expenses/models/transaction.dart';
 import 'package:personal_expenses/components/chart.dart';
+import 'package:personal_expenses/models/transaction_helper.dart';
 
 void main() {
   runApp(ExpensesApp());
@@ -52,62 +53,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'New running shoes',
-      value: 300.52,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Computer',
-      value: 2000.99,
-      date: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Teste',
-      value: 2000.99,
-      date: DateTime.now().subtract(const Duration(days: 40)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Teste',
-      value: 2000.99,
-      date: DateTime.now().subtract(const Duration(days: 40)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Teste',
-      value: 2000.99,
-      date: DateTime.now().subtract(const Duration(days: 40)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Teste',
-      value: 2000.99,
-      date: DateTime.now().subtract(const Duration(days: 40)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Teste',
-      value: 2000.99,
-      date: DateTime.now().subtract(const Duration(days: 40)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Teste',
-      value: 2000.99,
-      date: DateTime.now().subtract(const Duration(days: 40)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Teste',
-      value: 2000.99,
-      date: DateTime.now().subtract(const Duration(days: 40)),
-    ),
-  ];
+  List<Transaction> _transactions = [];
+
+  void _refreshTransactions() async {
+    final data = await TransactionHelper.transactions();
+    setState(() {
+      _transactions = data;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshTransactions();
+  }
 
   List<Transaction> get _recentTransactions {
     return _transactions
@@ -121,22 +80,14 @@ class _HomePageState extends State<HomePage> {
         .toList();
   }
 
-  _addTransaction(String title, double value, DateTime date) {
-    final newTransaction = Transaction(
-      id: Random().nextDouble().toString(),
-      title: title,
-      value: value,
-      date: date,
-    );
-
-    setState(() {
-      _transactions.add(newTransaction);
-    });
-
+  _addTransaction(Transaction transaction) {
+    TransactionHelper.insertTransaction(transaction);
     Navigator.of(context).pop();
+    _refreshTransactions();
   }
 
-  _deleteTransactionn(String id) {
+  _deleteTransaction(int id) {
+    TransactionHelper.deteleTransaction(id);
     setState(
       () {
         _transactions.removeWhere((element) => element.id == id);
@@ -178,7 +129,7 @@ class _HomePageState extends State<HomePage> {
           ),
           TransactionList(
             transactions: _transactions,
-            onRemove: _deleteTransactionn,
+            onRemove: _deleteTransaction,
           ),
           Expanded(
             flex: 1,

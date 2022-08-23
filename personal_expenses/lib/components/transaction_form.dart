@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../models/transaction.dart';
 
 class TransactionForm extends StatefulWidget {
   const TransactionForm({Key? key, required this.onSubmit}) : super(key: key);
 
-  final void Function(String, double, DateTime) onSubmit;
+  final void Function(Transaction) onSubmit;
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -14,17 +18,23 @@ class _TransactionFormState extends State<TransactionForm> {
   final _titleController = TextEditingController();
   final _valueController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
-  bool _isPickedDate = false;
 
   _submitForm() {
+    final id = Random().nextInt(10000);
     final title = _titleController.text;
     final value = double.tryParse(_valueController.text) ?? 0.0;
+    final date = _selectedDate;
 
     if (title.isEmpty || value <= 0) {
       return;
     }
 
-    widget.onSubmit(title, value, _selectedDate);
+    widget.onSubmit(Transaction(
+      id: id,
+      title: title,
+      value: value,
+      date: date,
+    ));
   }
 
   _showDatePicker() {
@@ -40,7 +50,6 @@ class _TransactionFormState extends State<TransactionForm> {
       setState(
         () {
           _selectedDate = pickedDate;
-          _isPickedDate = true;
         },
       );
     });
@@ -76,9 +85,8 @@ class _TransactionFormState extends State<TransactionForm> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(_isPickedDate
-                          ? 'Date: ${DateFormat('d/M/y').format(_selectedDate)}'
-                          : 'No date selected!'),
+                      child: Text(
+                          'Date: ${DateFormat('d/M/y').format(_selectedDate)}'),
                     ),
                     TextButton(
                       onPressed: _showDatePicker,

@@ -8,7 +8,7 @@ class TransactionList extends StatelessWidget {
       : super(key: key);
 
   final List<Transaction> transactions;
-  final void Function(String) onRemove;
+  final void Function(int) onRemove;
 
   final NumberFormat numberFormat = NumberFormat.compact();
 
